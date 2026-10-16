@@ -1,0 +1,51 @@
+# default_platform(:android)
+
+# platform :android do
+
+#   desc "Flutter Build"
+
+#   lane :build do
+
+#     sh("cd /app && flutter clean")
+
+#     sh("cd /app && flutter pub get")
+
+#     sh("cd /app && flutter pub run intl_utils:generate")
+
+#     sh("cd /app && flutter build appbundle --flavor=demo --dart-define=ENV=DEMO --release")
+
+#   end
+
+#   lane :release do
+
+#     build
+
+#     upload_to_play_store(
+#       json_key: ENV["PLAYSTORE_JSON"],
+#       package_name: ENV["APP_BUNDLE_ID"],
+#       aab: "/app/build/app/outputs/bundle/demoRelease/app-demo-release.aab"
+#     )
+
+#   end
+
+# end
+
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Build Flutter Android App Bundle"
+
+  lane :build do
+
+    workspace = ENV["WORKSPACE"] || "/workspace"
+
+    sh("cd #{workspace}/app && flutter clean")
+    sh("cd #{workspace}/app && flutter pub get")
+    sh("cd #{workspace}/app && flutter pub run intl_utils:generate")
+    sh("cd #{workspace}/app && flutter build appbundle --flavor=demo --dart-define=ENV=DEMO --release --verbose")
+
+  end
+
+end
