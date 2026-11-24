@@ -56,10 +56,6 @@ echo "========== Preparing Flutter Project =========="
 
 cd "$APP"
 
-echo "Authenticating with OnePub..."
-onepub import
-onepub pub add hugeicons
-
 mkdir -p "$APP/assets/logos"
 
 echo "Adding Portal Logo..."

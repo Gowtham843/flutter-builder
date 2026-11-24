@@ -14,7 +14,6 @@ required_vars=(
     PORTAL_NAME
     WEB_DOMAIN
     APP_VERSION
-    ONEPUB_TOKEN
 )
 
 for var in "${required_vars[@]}"; do
@@ -39,8 +38,6 @@ for file in "${required_files[@]}"; do
     fi
 done
 
-echo "ONEPUB_TOKEN length: ${#ONEPUB_TOKEN}"
-echo ""
 echo "========== Build Configuration =========="
 echo "APP_NAME       : $APP_NAME"
 echo "APP_BUNDLE_ID  : $APP_BUNDLE_ID"

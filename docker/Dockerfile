@@ -65,10 +65,6 @@ RUN cd /opt && \
     
 RUN git config --system --add safe.directory /opt/flutter
 
-# Install OnePub CLI
-RUN dart pub global activate onepub
-ENV PATH="${PATH}:/root/.pub-cache/bin"
-
 # Fastlane
 RUN gem install bundler fastlane
 
@@ -100,13 +96,12 @@ RUN echo "[prewarm] Checking declared ndkVersion in reference app:" && \
 # NOTE: both `flutter pub get` and `flutter build appbundle` below are
 # individually wrapped in `(... || echo "...")` rather than relying on a
 # single trailing `|| true` for the whole chain. This is deliberate:
-# `flutter pub get` can fail if the reference app depends on privately-hosted
-# OnePub packages, since OnePub authentication normally happens at CONTAINER
-# RUNTIME (via prepare.sh using $ONEPUB_TOKEN), not at `docker build` time.
+# `flutter pub get` can fail if the reference app can't resolve a dependency
+# at image-build time (no portal secrets or branded config yet).
 # Without individual wrapping, a pub-get failure here would fail the ENTIRE
 # image build. With individual wrapping, public dependencies (the majority of
 # the download weight: Firebase, ExoPlayer, Compose, Play Services, etc.)
-# still get cached even if a private package can't resolve at build time.
+# still get cached even if one package can't resolve at build time.
 RUN cd /tmp/warm/app && \
     (flutter pub get || \
       echo "[prewarm] flutter pub get failed or partially failed — continuing, public deps may still be cached") && \
